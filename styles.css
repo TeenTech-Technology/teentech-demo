@@ -1,4 +1,4 @@
-:root{--bg:#0b0b0f;--bg2:#121212;--card:#16161c;--line:rgba(255,255,255,.08);--text:#fff;--muted:#a1a1aa;--blue:#156CF1;--blue2:#4b8ff7;--r:18px}
+:root{--wa:#25D366;--bg:#0b0b0f;--bg2:#121212;--card:#16161c;--line:rgba(255,255,255,.08);--text:#fff;--muted:#a1a1aa;--blue:#156CF1;--blue2:#4b8ff7;--r:18px}
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}
 body{font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
@@ -44,7 +44,7 @@ svg{display:block}
 .hero::after{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:48px 48px;mask-image:radial-gradient(ellipse at center,#000 30%,transparent 75%);-webkit-mask-image:radial-gradient(ellipse at center,#000 30%,transparent 75%);pointer-events:none}
 .hero-inner{position:relative;z-index:1}
 .eyebrow{display:inline-block;font-size:.78rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--blue2);margin-bottom:16px}
-h1{font-size:clamp(2.4rem,8.5vw,4.6rem);line-height:1.05;letter-spacing:-.035em;font-weight:800;max-width:14ch}
+h1{font-size:clamp(2.2rem,8vw,4.2rem);line-height:1.06;letter-spacing:-.035em;font-weight:800;max-width:18ch}
 .lead{font-size:clamp(1.02rem,2.6vw,1.2rem);color:var(--muted);max-width:56ch;margin-top:22px}
 .hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
 
@@ -94,12 +94,66 @@ h3{font-size:1.12rem;font-weight:600;letter-spacing:-.01em}
 .footer-bottom{display:flex;justify-content:space-between;gap:12px;margin-top:36px;padding-top:20px;border-top:1px solid var(--line);color:var(--muted)}
 .demo{opacity:.7;font-size:.72rem}
 
+/* WhatsApp buttons */
+.btn-wa{background:var(--blue);color:#fff;box-shadow:0 6px 24px -8px rgba(21,108,241,.7)}
+.btn-wa:hover{transform:translateY(-2px);box-shadow:0 12px 32px -8px rgba(21,108,241,.85);background:#2a7af3}
+.btn-sm svg{width:16px;height:16px}
+.hero-points{display:flex;flex-wrap:wrap;gap:10px 20px;margin-top:26px;font-size:.92rem;color:#d4d4d8}
+.hero-points li{display:inline-flex;align-items:center;gap:8px}
+.hero-points svg{width:16px;height:16px;color:var(--wa)}
+.wa-float{position:fixed;right:18px;bottom:18px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:60;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:var(--wa);color:#fff;box-shadow:0 10px 28px -6px rgba(37,211,102,.55),0 2px 8px rgba(0,0,0,.4);transition:transform .25s ease,box-shadow .25s ease}
+.wa-float svg{width:30px;height:30px}
+.wa-float:hover{transform:scale(1.07);box-shadow:0 14px 34px -6px rgba(37,211,102,.7),0 2px 8px rgba(0,0,0,.4)}
+.wa-float::before{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid var(--wa);animation:waPulse 2.6s ease-out infinite}
+@keyframes waPulse{0%{transform:scale(1);opacity:.7}100%{transform:scale(1.5);opacity:0}}
+
+/* Problems */
+.problem{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:var(--r);background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.01));padding:24px;transition:transform .35s cubic-bezier(.2,.7,.2,1),border-color .35s}
+.problem:hover{transform:translateY(-4px);border-color:rgba(21,108,241,.4)}
+.problem h3{font-size:1.08rem;line-height:1.35;padding-left:28px;position:relative}
+.problem h3::before{content:"?";position:absolute;left:0;top:1px;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:.75rem;font-weight:700;background:rgba(255,255,255,.08);color:#e4e4e7}
+.fix{margin-top:16px;padding-top:16px;border-top:1px dashed rgba(255,255,255,.12);color:var(--muted);font-size:.94rem}
+.fix span{display:block;font-size:.72rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--blue2);margin-bottom:4px}
+
+/* Steps with buttons */
+.step{display:flex;flex-direction:column}
+.step .btn{margin-top:20px;align-self:flex-start}
+
+/* Ask link */
+.card{display:flex;flex-direction:column}
+.ask{margin-top:auto;padding-top:18px;display:inline-flex;align-items:center;gap:6px;font-size:.9rem;font-weight:600;color:var(--blue2);align-self:flex-start;transition:gap .25s,color .25s}
+.ask svg{width:16px;height:16px}
+.ask:hover{gap:10px;color:#fff}
+
+/* FAQ */
+.faq{display:grid;gap:12px}
+.faq details{border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.02);transition:border-color .25s}
+.faq details[open]{border-color:rgba(21,108,241,.4)}
+.faq summary{cursor:pointer;list-style:none;padding:18px 52px 18px 20px;font-weight:600;position:relative}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";position:absolute;right:20px;top:50%;transform:translateY(-50%);font-size:1.4rem;font-weight:400;color:var(--blue2);transition:transform .25s}
+.faq details[open] summary::after{transform:translateY(-50%) rotate(45deg)}
+.faq details p{padding:0 20px 18px;color:var(--muted);font-size:.95rem}
+
+/* Final CTA */
+.cta h2{max-width:22ch;margin:0 auto}
+.cta p{max-width:52ch;margin-left:auto;margin-right:auto}
+.cta .eyebrow{margin:0 0 14px;color:var(--blue2)}
+.cta-note{display:block;margin-top:18px;color:var(--muted);font-size:.85rem}
+
+@media (max-width:899px){.footer{padding-bottom:100px}}
+@media (max-width:480px){.cta{padding:44px 18px}.cta .btn-lg{padding:15px 22px;font-size:1rem;white-space:nowrap}}
+
 /* Responsive */
-@media (min-width:640px){.cards{grid-template-columns:repeat(2,1fr)}.steps{grid-template-columns:repeat(2,1fr)}.container{padding:0 28px}}
+@media (min-width:640px){.cards,.problems{grid-template-columns:repeat(2,1fr)}.steps{grid-template-columns:repeat(2,1fr)}.steps-3{grid-template-columns:1fr}.container{padding:0 28px}}
 @media (min-width:900px){
   .nav-links{display:flex}
   .cards{grid-template-columns:repeat(3,1fr);gap:20px}
   .steps{grid-template-columns:repeat(4,1fr)}
+  .steps-3{grid-template-columns:repeat(3,1fr)}
+  .problems{grid-template-columns:repeat(4,1fr)}
+  .faq-wrap{display:grid;grid-template-columns:1fr 1.4fr;gap:48px;align-items:start}
+  .wa-float{right:28px;bottom:28px}
   .zambia{grid-template-columns:1fr 1.2fr;align-items:start}
   .section{padding:120px 0}
   .footer-inner{grid-template-columns:1fr auto;align-items:start}
@@ -109,5 +163,5 @@ h3{font-size:1.12rem;font-weight:600;letter-spacing:-.01em}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
-  .card:hover,.step:hover,.feat:hover,.btn:hover{transform:none}
+  .card:hover,.step:hover,.feat:hover,.btn:hover,.problem:hover,.wa-float:hover{transform:none}
 }

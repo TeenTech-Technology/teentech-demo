@@ -42,7 +42,7 @@
   });
 
   // Staggered groups
-  [['.cards', '.card'], ['.steps', '.step'], ['.feats', '.feat']].forEach(function (g) {
+  [['.problems', '.problem'], ['.cards', '.card'], ['.steps', '.step'], ['.feats', '.feat'], ['.faq', 'details']].forEach(function (g) {
     var wrap = document.querySelector(g[0]);
     if (!wrap) return;
     gsap.from(wrap.querySelectorAll(g[1]), { y: 32, opacity: 0, duration: 0.8, ease: 'power3.out', stagger: 0.08,
