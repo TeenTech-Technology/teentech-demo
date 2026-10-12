@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Phone Doctor · Repair Tracker Demo</title>
+<style>
+:root{--b:#156CF1;--k:#0a0a0a;--w:#fff;--g:#1a1a1a;--m:#9aa3b2}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--k);color:var(--w)}
+header{padding:18px 16px;background:linear-gradient(135deg,#000,#0b2a66);border-bottom:3px solid var(--b)}
+h1{margin:0;font-size:1.4rem}h1 span{color:var(--b)}.sub{color:var(--m);font-size:.85rem;margin-top:4px}
+.badge{display:inline-block;background:#f5b301;color:#000;font-weight:700;font-size:.7rem;padding:3px 8px;border-radius:99px;margin-top:8px}
+main{padding:14px;max-width:760px;margin:auto}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.card{background:var(--g);border:1px solid #262a33;border-radius:14px;padding:14px}
+.num{font-size:2rem;font-weight:800;color:var(--b)}.lbl{color:var(--m);font-size:.8rem}
+h2{font-size:1.05rem;margin:22px 0 10px}
+label{display:block;font-size:.8rem;color:var(--m);margin:10px 0 4px}
+input,select,textarea{width:100%;padding:11px;border-radius:10px;border:1px solid #333;background:#000;color:#fff;font-size:1rem}
+button{cursor:pointer;border:0;border-radius:10px;padding:12px 14px;font-weight:700;font-size:1rem}
+.primary{background:var(--b);color:#fff;width:100%;margin-top:14px}
+.job{background:var(--g);border:1px solid #262a33;border-radius:14px;padding:12px;margin-bottom:10px}
+.job .top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.tid{font-weight:800;color:var(--b)}.st{font-size:.72rem;padding:3px 8px;border-radius:99px;background:#333}
+.st.Ready{background:#16a34a}.st.Collected{background:#555}.st.Diagnosing{background:#7c3aed}.st[data-s="Waiting for parts"]{background:#d97706}.st.Received{background:var(--b)}
+.meta{color:var(--m);font-size:.82rem;margin:6px 0}
+.wa{background:#0b141a;border-radius:14px;padding:12px;margin-top:8px}
+.bub{background:#005c4b;color:#e9edef;padding:10px 12px;border-radius:10px 10px 2px 10px;font-size:.9rem;white-space:pre-wrap;max-width:92%;margin-left:auto}
+.wah{color:#8696a0;font-size:.75rem;margin-bottom:6px}
+footer{text-align:center;padding:26px 16px;border-top:1px solid #222;margin-top:24px;color:var(--m)}
+.wabtn{display:inline-block;margin-top:10px;background:#25D366;color:#000;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:99px}
+.small{font-size:.75rem;color:var(--m)}.reset{background:#222;color:#fff;font-size:.8rem;padding:8px 12px}
+</style></head><body>
+<header><h1>Phone <span>Doctor</span> · Repair Tracker</h1><div class="sub">Cairo Rd, Lusaka · Interactive demo</div><div class="badge">DEMO DATA: sample jobs only</div></header>
+<main>
+<div class="cards"><div class="card"><div class="num" id="cToday">0</div><div class="lbl">Jobs booked today</div></div>
+<div class="card"><div class="num" id="cReady">0</div><div class="lbl">Ready for collection</div></div></div>
+
+<h2>📥 Book in a phone</h2>
+<form class="card" id="f">
+<label>Customer name</label><input id="n" required placeholder="e.g. Mutale Banda">
+<label>Customer phone</label><input id="p" required placeholder="+260 97x xxx xxx" inputmode="tel">
+<label>Device</label><input id="d" required placeholder="e.g. Samsung A14">
+<label>Fault</label><input id="fa" required placeholder="e.g. Cracked screen">
+<label>Expected ready date</label><input id="r" type="date" required>
+<button class="primary">Create ticket</button></form>
+<div id="bookPrev"></div>
+
+<h2>🔧 Jobs <span class="small">(Demo data)</span></h2>
+<div id="jobs"></div>
+<button class="reset" onclick="if(confirm('Reset demo data?')){localStorage.removeItem(K);load();render()}">Reset demo data</button>
+</main>
+<footer>Demo by Teen Tech Technology<br><a class="wabtn" href="https://wa.me/260979331340" target="_blank" rel="noopener">💬 Chat with Teen Tech on WhatsApp</a><div class="small" style="margin-top:10px">All names and jobs shown are fictional sample data.</div></footer>
+<script>
+const K='pd_demo_v1',S=['Received','Diagnosing','Waiting for parts','Ready','Collected'];
+const today=()=>new Date().toISOString().slice(0,10);
+const addD=n=>{const d=new Date();d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)};
+const fmt=s=>new Date(s+'T12:00').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
+let db;
+function load(){db=JSON.parse(localStorage.getItem(K)||'null');if(!db){db={next:1042,jobs:[
+{id:'PD-1038',name:'Chanda M. (demo)',phone:'+260 970 000 001',device:'iPhone 11',fault:'Battery drains fast',ready:addD(0),status:'Ready',booked:addD(-2)},
+{id:'PD-1039',name:'Bwalya K. (demo)',phone:'+260 970 000 002',device:'Tecno Spark 10',fault:'Charging port loose',ready:addD(1),status:'Diagnosing',booked:addD(-1)},
+{id:'PD-1040',name:'Natasha P. (demo)',phone:'+260 970 000 003',device:'Samsung A14',fault:'Cracked screen',ready:addD(2),status:'Waiting for parts',booked:today()},
+{id:'PD-1041',name:'Joseph T. (demo)',phone:'+260 970 000 004',device:'Itel A70',fault:'No sound on calls',ready:addD(1),status:'Received',booked:today()}]};save()}}
+function save(){localStorage.setItem(K,JSON.stringify(db))}
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const msgBook=j=>`Hi ${j.name.split(' ')[0]}, thanks for choosing Phone Doctor! 📱\nYour ${j.device} is booked in.\nTicket: ${j.id}\nFault: ${j.fault}\nExpected ready: ${fmt(j.ready)}\nWe'll message you as soon as it's ready.`;
+const msgReady=j=>`Good news ${j.name.split(' ')[0]}! ✅\nYour ${j.device} (ticket ${j.id}) is READY for collection at Phone Doctor, Cairo Rd.\nPlease bring your ticket number. Thank you!`;
+const wa=(t,h)=>`<div class="wa"><div class="wah">WhatsApp preview · ${h}</div><div class="bub">${esc(t)}</div></div>`;
+function render(){
+document.getElementById('cToday').textContent=db.jobs.filter(j=>j.booked===today()).length;
+document.getElementById('cReady').textContent=db.jobs.filter(j=>j.status==='Ready').length;
+document.getElementById('jobs').innerHTML=db.jobs.slice().reverse().map(j=>`<div class="job"><div class="top"><span class="tid">${j.id}</span><span class="st ${j.status.split(' ')[0]}" data-s="${j.status}">${j.status}</span></div>
+<div class="meta"><b style="color:#fff">${esc(j.name)}</b> · ${esc(j.phone)}<br>${esc(j.device)}: ${esc(j.fault)}<br>Ready by ${fmt(j.ready)}</div>
+<select onchange="setS('${j.id}',this.value)">${S.map(s=>`<option ${s===j.status?'selected':''}>${s}</option>`).join('')}</select>
+${j.status==='Ready'?wa(msgReady(j),'sent to customer when status became Ready'):''}</div>`).join('')}
+function setS(id,s){const j=db.jobs.find(x=>x.id===id);j.status=s;save();render()}
+document.getElementById('f').onsubmit=e=>{e.preventDefault();const v=x=>document.getElementById(x).value.trim();
+const j={id:'PD-'+db.next++,name:v('n'),phone:v('p'),device:v('d'),fault:v('fa'),ready:v('r'),status:'Received',booked:today()};
+db.jobs.push(j);save();render();e.target.reset();document.getElementById('r').value=addD(2);
+document.getElementById('bookPrev').innerHTML=wa(msgBook(j),'sent to customer at booking');document.getElementById('bookPrev').scrollIntoView({behavior:'smooth'})};
+load();document.getElementById('r').value=addD(2);render();
+</script></body></html>
