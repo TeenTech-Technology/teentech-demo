@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bite and Basket · Digital Menu Demo</title>
+<style>
+:root{--b:#156CF1;--k:#0a0a0a;--w:#fff;--g:#141414;--m:#9aa3b2;--ok:#16a34a;--sold:#6b7280;--wa:#25D366}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--k);color:var(--w)}
+header{padding:18px 16px;background:linear-gradient(135deg,#000,#1a1208);border-bottom:3px solid #e8a317}
+h1{margin:0;font-size:1.35rem;line-height:1.25}.sub{color:var(--m);font-size:.85rem;margin-top:4px}
+.badge{display:inline-block;background:#f5b301;color:#000;font-weight:700;font-size:.7rem;padding:3px 8px;border-radius:99px;margin-top:8px}
+main{padding:14px;max-width:720px;margin:auto}
+.tabs{display:flex;gap:8px;margin:14px 0 8px;flex-wrap:wrap}
+.tab{background:#222;color:#fff;border:1px solid #333;border-radius:99px;padding:8px 14px;font-weight:700;font-size:.85rem;cursor:pointer}
+.tab.on{background:#e8a317;color:#000;border-color:#e8a317}
+.item{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;background:var(--g);border:1px solid #262a33;border-radius:14px;padding:12px;margin-bottom:10px}
+.item.out{opacity:.55}.item.out .name{text-decoration:line-through}
+.name{font-weight:700}.desc{color:var(--m);font-size:.82rem;margin-top:3px}
+.price{font-weight:800;color:#e8a317;white-space:nowrap}
+.right{text-align:right;min-width:88px}
+.tog{margin-top:8px;font-size:.72rem;padding:5px 8px;border-radius:8px;border:0;cursor:pointer;font-weight:700}
+.tog.avail{background:#16351f;color:#86efac}.tog.gone{background:#333;color:#ddd}
+.panel{background:var(--g);border:1px solid #262a33;border-radius:14px;padding:14px;margin-top:18px}
+label{display:block;font-size:.8rem;color:var(--m);margin:10px 0 4px}
+input,select,textarea{width:100%;padding:11px;border-radius:10px;border:1px solid #333;background:#000;color:#fff;font-size:1rem}
+button.primary{cursor:pointer;border:0;border-radius:10px;padding:12px 14px;font-weight:700;font-size:1rem;background:var(--b);color:#fff;width:100%;margin-top:14px}
+.wa{background:#0b141a;border-radius:14px;padding:12px;margin-top:12px}
+.bub{background:#005c4b;color:#e9edef;padding:10px 12px;border-radius:10px 10px 2px 10px;font-size:.9rem;white-space:pre-wrap;max-width:96%;margin-left:auto}
+.wah{color:#8696a0;font-size:.75rem;margin-bottom:6px}
+footer{text-align:center;padding:26px 16px;border-top:1px solid #222;margin-top:24px;color:var(--m);font-size:.85rem}
+.wabtn{display:inline-block;margin-top:10px;background:var(--wa);color:#000;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:99px}
+.small{font-size:.75rem;color:var(--m)}
+.hint{background:#1a1408;border:1px solid #3a2e12;border-radius:12px;padding:12px;margin:12px 0;color:#f5d48a;font-size:.88rem}
+</style>
+</head>
+<body>
+<header>
+  <h1>Bite and Basket · Digital Menu</h1>
+  <div class="sub">6 Chindo Rd, Woodlands, Lusaka · Indian vegetarian restaurant &amp; grocery</div>
+  <div class="badge">DEMO: sample dishes and prices only</div>
+</header>
+<main>
+  <div class="hint">Tap “Mark sold out” the way staff would when a dish runs out. Customers then order or book by WhatsApp with their name and order text ready to send.</div>
+
+  <div class="tabs">
+    <button class="tab on" data-tab="buffet" type="button">Weekend buffet</button>
+    <button class="tab" data-tab="grocery" type="button">Grocery</button>
+  </div>
+
+  <section id="buffet"></section>
+  <section id="grocery" hidden></section>
+
+  <div class="panel">
+    <h2 style="margin:0 0 6px;font-size:1.05rem">Order or book on WhatsApp</h2>
+    <p class="small" style="margin:0">Demo only. In a live version this opens the restaurant’s own WhatsApp.</p>
+    <label>Your name</label>
+    <input id="n" placeholder="e.g. Chanda Phiri" autocomplete="name">
+    <label>What would you like?</label>
+    <select id="kind">
+      <option value="buffet">Weekend buffet booking</option>
+      <option value="takeaway">Takeaway order</option>
+      <option value="grocery">Grocery order</option>
+    </select>
+    <label>Details (time, dishes, or grocery list)</label>
+    <textarea id="d" rows="3" placeholder="e.g. Saturday 12:30, 2 adults. Or list dishes / grocery items."></textarea>
+    <button class="primary" id="go" type="button">Preview WhatsApp message</button>
+    <div class="wa" id="preview" hidden>
+      <div class="wah">WhatsApp preview</div>
+      <div class="bub" id="bub"></div>
+      <a class="wabtn" id="walink" href="#" target="_blank" rel="noopener">Open in WhatsApp</a>
+      <p class="small">Demo link goes to Teen Tech’s number so you can test the flow. Live version would use Bite and Basket’s number.</p>
+    </div>
+  </div>
+</main>
+<footer>
+  Sample digital menu by <strong>Teen Tech Technology</strong>, Lusaka<br>
+  <span class="small">Not a live ordering system. Demo data only.</span>
+</footer>
+<script>
+const buffet=[
+  {id:'b1',name:'Vegetable thali',desc:'Rice, dal, seasonal sabzi, raita, salad',price:'K95'},
+  {id:'b2',name:'Paneer butter masala',desc:'With naan or rice',price:'K110'},
+  {id:'b3',name:'Chole bhature',desc:'Chickpea curry with fried bread',price:'K85'},
+  {id:'b4',name:'Masala dosa',desc:'Crispy dosa, potato filling, chutneys',price:'K75'},
+  {id:'b5',name:'Gulab jamun (2 pcs)',desc:'Dessert',price:'K35'}
+];
+const grocery=[
+  {id:'g1',name:'Basmati rice 5kg',desc:'Long grain',price:'K180'},
+  {id:'g2',name:'Toor dal 1kg',desc:'Split pigeon peas',price:'K55'},
+  {id:'g3',name:'Ghee 500ml',desc:'Clarified butter',price:'K95'},
+  {id:'g4',name:'Spice pack (small)',desc:'Garam masala, turmeric, chilli',price:'K60'}
+];
+const sold=new Set();
+function render(list,el){
+  el.innerHTML=list.map(it=>{
+    const out=sold.has(it.id);
+    return `<article class="item${out?' out':''}" data-id="${it.id}">
+      <div><div class="name">${it.name}</div><div class="desc">${it.desc}</div></div>
+      <div class="right"><div class="price">${out?'Sold out':it.price}</div>
+      <button type="button" class="tog ${out?'gone':'avail'}" data-id="${it.id}">${out?'Mark available':'Mark sold out'}</button></div>
+    </article>`;
+  }).join('');
+}
+const buffetEl=document.getElementById('buffet');
+const groceryEl=document.getElementById('grocery');
+function refresh(){render(buffet,buffetEl);render(grocery,groceryEl)}
+refresh();
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');
+  const tab=t.dataset.tab;
+  buffetEl.hidden=tab!=='buffet';
+  groceryEl.hidden=tab!=='grocery';
+}));
+document.body.addEventListener('click',e=>{
+  const btn=e.target.closest('.tog');
+  if(!btn) return;
+  const id=btn.dataset.id;
+  if(sold.has(id)) sold.delete(id); else sold.add(id);
+  refresh();
+});
+document.getElementById('go').addEventListener('click',()=>{
+  const name=(document.getElementById('n').value||'Customer').trim();
+  const kind=document.getElementById('kind').value;
+  const details=(document.getElementById('d').value||'(no details yet)').trim();
+  const label={buffet:'Weekend buffet booking',takeaway:'Takeaway order',grocery:'Grocery order'}[kind];
+  const msg=`Hi Bite and Basket, this is ${name}.\n\n${label}:\n${details}\n\n(Sent from the digital menu demo)`;
+  document.getElementById('bub').textContent=msg;
+  document.getElementById('walink').href='https://wa.me/260979331340?text='+encodeURIComponent(msg);
+  document.getElementById('preview').hidden=false;
+});
+</script>
+</body>
+</html>
